@@ -4,8 +4,9 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from .exceptions import InvalidInputException, NoneResultException
 from .utils import escape_special_characters
+from .base import BaseModel
 
-class GeminiModel:
+class GeminiModel(BaseModel):
     """
     Model that talks to the Gemini service to interact with models.
     """
@@ -25,6 +26,7 @@ class GeminiModel:
         Args:
             model_name (str): The name of the model to use.
         """
+        super().__init__()
         model_id = self._name2model_id(model_name)
         self.model = ChatGoogleGenerativeAI(model=model_id, **self.DEFAULT_MODEL_PARAMS, convert_system_message_to_human=True)
         self.parser = StrOutputParser()

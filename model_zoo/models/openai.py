@@ -6,8 +6,9 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from .exceptions import NoneResultException
 from .utils import escape_special_characters
+from .base import BaseModel
 
-class OpenAIModel:
+class OpenAIModel(BaseModel):
     """
     Model that talks to the OpenAI service to interact with models.
     """
@@ -27,6 +28,7 @@ class OpenAIModel:
         Args:
             model_name (str): The name of the model to use.
         """
+        super().__init__()
         model_id = self._name2model_id(model_name)
         self.model = ChatOpenAI(model=model_id, **self.DEFAULT_MODEL_PARAMS)
         self.parser = StrOutputParser()

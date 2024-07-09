@@ -5,14 +5,19 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from .exceptions import InvalidInputException, NoneResultException
 from .utils import escape_special_characters
+from .base import BaseModel
 
-class GroqModel:
+class GroqModel(BaseModel):
     """
     Model that talk to groq service to interact with models
     """
     _logger = logging.getLogger(__name__)
     _MODELS = {
-        "llama3-8b": "llama3-8b-8192"
+        "llama3-8b": "llama3-8b-8192",
+        "llama3-70b": "llama3-70b-8192",
+        "mixtral-7b": "mixtral-8x7b-32768",
+        "gemma-7b": "gemma-7b-it",
+        "whisper-large-v3": "whisper-large-v3",
     }
     
     DEFAULT_MODEL_PARAMS = {
@@ -29,6 +34,7 @@ class GroqModel:
         Args:
             model_name (str): The name of the model to use.
         """
+        super().__init__()
         model_id = self._name2model_id(model_name)
         self.model = ChatGroq(model=model_id, **self.DEFAULT_MODEL_PARAMS)
         self.parser = StrOutputParser()
