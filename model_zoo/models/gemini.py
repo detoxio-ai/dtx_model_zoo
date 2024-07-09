@@ -3,6 +3,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from .exceptions import InvalidInputException, NoneResultException
+from .utils import escape_special_characters
 
 class GeminiModel:
     """
@@ -61,7 +62,8 @@ class GeminiModel:
         if system:
             message.append(("system", system))
         
-        message.append(("human", prompt))
+        escaped_prompt = escape_special_characters(prompt)
+        message.append(("human", escaped_prompt))
         prompt = ChatPromptTemplate.from_messages(message)
 
         chain = prompt | self.model | self.parser
